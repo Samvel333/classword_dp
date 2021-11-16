@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const { connection } = require('./database/connection');
+const {connection} = require('./database/connection');
 const user = require('./member/route');
 const {
     HOST,

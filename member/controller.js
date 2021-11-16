@@ -1,8 +1,9 @@
-const { connection } = require('../database/connection');
-const { StatusCodes } = require('http-status-codes');
-const { validationResult } = require('express-validator');
+const {connection} = require('../database/connection');
+const {StatusCodes} = require('http-status-codes');
+const {validationResult} = require('express-validator');
 const moment = require('moment')
 const {getUserByEmail} = require("database/getdata");
+
 class User {
 
     // Get all
@@ -37,27 +38,27 @@ class User {
 
     // Create a new user
     static create = async function (req, res, next) {
-            let dateNow = new Date(), momentDate = moment(dateNow).format('YYYY-MM-DD')
-            const errors = validationResult(req)
-            if (!errors.isEmpty()) {
-                return res.status(400).json({errors: errors.array()});
-            }
-            const {first_name, last_name, email, username, date_of_birth} = req.body
-            const created_at = momentDate, updated_at = momentDate
-            const candidate = await getUserByEmail(email)
-            if (candidate[0]) {
-                res.json({
-                    status: 'error',
-                    message: "email already exists"
-                })
-            }
-            await connection.query(`INSERT INTO members(first_name, last_name, email, username, date_of_birth, created_at, updated_at) 
+        let dateNow = new Date(), momentDate = moment(dateNow).format('YYYY-MM-DD')
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({errors: errors.array()});
+        }
+        const {first_name, last_name, email, username, date_of_birth} = req.body
+        const created_at = momentDate, updated_at = momentDate
+        const candidate = await getUserByEmail(email)
+        if (candidate[0]) {
+            res.json({
+                status: 'error',
+                message: "email already exists"
+            })
+        }
+        await connection.query(`INSERT INTO members(first_name, last_name, email, username, date_of_birth, created_at, updated_at) 
                                     VALUES('${first_name}','${last_name}','${email}', '${username}', '${date_of_birth}','${created_at}','${updated_at}')`,
-                (error) =>{
-                    if (error) throw error;
+            (error) => {
+                if (error) throw error;
 
-                });
-        return res.status(201).json({ message: 'success' });
+            });
+        return res.status(201).json({message: 'success'});
     }
 
     // Update user by :id
@@ -77,10 +78,10 @@ class User {
             })
         }
         await connection.query(`UPDATE members SET first_name = '${first_name}', last_name = '${last_name}', email = '${email}, username = '${username}', date_of_birth = '${date_of_birth}', updated_at = '${updated_at}'`,
-            (error) =>{
+            (error) => {
                 if (error) throw error;
-        });
-        return res.status(201).json({ message: 'success' })
+            });
+        return res.status(201).json({message: 'success'})
     }
 
     // Delete user by :id
@@ -94,4 +95,4 @@ class User {
 
 }
 
-module.exports = { User }
+module.exports = {User}
