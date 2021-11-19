@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const {connection} = require('./database/connection');
-const user = require('./member/route');
+const user = require('./user/route');
+const member = require('./member/route');
 const {
     HOST,
     PORT,
@@ -10,6 +11,7 @@ const {
 app.use(express.json());
 
 app.use('/user', user.route)
+app.use('/member', member.route)
 
 connection.connect(function (err) {
     if (err) {

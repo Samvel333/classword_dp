@@ -1,12 +1,12 @@
 const express = require('express');
 const route = express.Router();
-const { User } = require('./controller');
-const validation = require('./validation');
+const { Member } = require('./controller');
+const {memberValidation} = require('./validation');
 
-route.get('/', User.index);
-route.get('/:id', User.show);
-route.post('/', validation.create, User.create);
-route.put('/:id', validation.update, User.update);
-route.delete('/:id', User.destroy);
+route.get('/', Member.index);
+route.get('/:id', Member.show);
+route.post('/', memberValidation, Member.create);
+route.put('/:id', memberValidation, Member.update);
+route.delete('/:id', Member.destroy);
 
 module.exports = { route }
